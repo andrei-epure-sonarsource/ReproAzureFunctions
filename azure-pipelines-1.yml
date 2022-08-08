@@ -24,18 +24,11 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      New-Item -Path .\.sonar\scanner -ItemType Directory
-      dotnet tool install dotnet-sonarscanner --version 5.7.2 --tool-path .\.sonar\scanner
+      dotnet tool install --global dotnet-sonarscanner --version 5.7.2
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      
-      .\.sonar\scanner\dotnet-sonarscanner begin /k:"2022-08-05-ReproAzureFunctions" /o:"andrei-epure-sonarsource-github" /d:sonar.login="$(SONAR_TOKEN)" /d:sonar.host.url="https://sonarcloud.io"
+      dotnet sonarscanner begin /k:"2022-08-05-ReproAzureFunctions" /o:"andrei-epure-sonarsource-github" /d:sonar.login="$(SONAR_TOKEN)" /d:sonar.host.url="https://sonarcloud.io"
       
       dotnet restore
       dotnet build
       
-      .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="$(SONAR_TOKEN)"
+      dotnet sonarscanner end /d:sonar.login="$(SONAR_TOKEN)"
